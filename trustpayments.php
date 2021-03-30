@@ -34,7 +34,7 @@ class TrustPayments extends PaymentModule
         $this->author = 'Customweb GmbH';
         $this->bootstrap = true;
         $this->need_instance = 0;
-        $this->version = '1.2.3';
+        $this->version = '1.2.4';
         $this->displayName = 'Trust Payments';
         $this->description = $this->l('This PrestaShop module enables to process payments with %s.');
         $this->description = sprintf($this->description, 'Trust Payments');
@@ -594,17 +594,17 @@ class TrustPayments extends PaymentModule
     {
         TrustPaymentsBasemodule::hookDisplayBackOfficeHeader($this, $params);
     }
-    
+
     public function hookDisplayAdminOrderLeft($params)
     {
         return TrustPaymentsBasemodule::hookDisplayAdminOrderLeft($this, $params);
     }
-    
+
     public function hookDisplayAdminOrderTabOrder($params)
     {
         return TrustPaymentsBasemodule::hookDisplayAdminOrderTabOrder($this, $params);
     }
-    
+
     public function hookDisplayAdminOrderContentOrder($params)
     {
         return TrustPaymentsBasemodule::hookDisplayAdminOrderContentOrder($this, $params);
