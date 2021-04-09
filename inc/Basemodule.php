@@ -1788,7 +1788,89 @@ class TrustPaymentsBasemodule
      */
     public static function hookDisplayAdminOrderMain(TrustPayments $module, $params)
     {
-        self::hookDisplayAdminOrderLeft($module, $params);
+        $orderId = $params['id_order'];
+        $order = new Order($orderId);
+        if ($order->module != $module->name) {
+            return;
+        }
+        $transactionInfo = TrustPaymentsHelper::getTransactionInfoForOrder($order);
+        if ($transactionInfo == null) {
+            return '';
+        }
+        $spaceId = $transactionInfo->getSpaceId();
+        $transactionId = $transactionInfo->getTransactionId();
+        $methodId = TrustPaymentsHelper::getOrderMeta($order, 'trustPaymentsMethodId');
+        $method = new TrustPaymentsModelMethodconfiguration($methodId);
+        $tplVars = array(
+            'currency' => new Currency($order->id_currency),
+            'configurationName' => $method->getConfigurationName(),
+            'methodImage' => TrustPaymentsHelper::getResourceUrl(
+                $transactionInfo->getImageBase(),
+                $transactionInfo->getImage(),
+                TrustPaymentsHelper::convertLanguageIdToIETF($order->id_lang),
+                $spaceId,
+                $transactionInfo->getSpaceViewId()
+            ),
+            'transactionState' => TrustPaymentsHelper::getTransactionState($transactionInfo),
+            'failureReason' => TrustPaymentsHelper::translate($transactionInfo->getFailureReason()),
+            'authorizationAmount' => $transactionInfo->getAuthorizationAmount(),
+            'transactionUrl' => TrustPaymentsHelper::getTransactionUrl($transactionInfo),
+            'labelsByGroup' => TrustPaymentsHelper::getGroupedChargeAttemptLabels($transactionInfo),
+            'voids' => TrustPaymentsModelVoidjob::loadByTransactionId($spaceId, $transactionId),
+            'completions' => TrustPaymentsModelCompletionjob::loadByTransactionId($spaceId, $transactionId),
+            'refunds' => TrustPaymentsModelRefundjob::loadByTransactionId($spaceId, $transactionId)
+        );
+        $module->getContext()->smarty->registerPlugin(
+            'function',
+            'trustpayments_translate',
+            array(
+                'TrustPaymentsSmartyfunctions',
+                'translate'
+            )
+        );
+        $module->getContext()->smarty->registerPlugin(
+            'function',
+            'trustpayments_refund_url',
+            array(
+                'TrustPaymentsSmartyfunctions',
+                'getRefundUrl'
+            )
+        );
+        $module->getContext()->smarty->registerPlugin(
+            'function',
+            'trustpayments_refund_amount',
+            array(
+                'TrustPaymentsSmartyfunctions',
+                'getRefundAmount'
+            )
+        );
+        $module->getContext()->smarty->registerPlugin(
+            'function',
+            'trustpayments_refund_type',
+            array(
+                'TrustPaymentsSmartyfunctions',
+                'getRefundType'
+            )
+        );
+        $module->getContext()->smarty->registerPlugin(
+            'function',
+            'trustpayments_completion_url',
+            array(
+                'TrustPaymentsSmartyfunctions',
+                'getCompletionUrl'
+            )
+        );
+        $module->getContext()->smarty->registerPlugin(
+            'function',
+            'trustpayments_void_url',
+            array(
+                'TrustPaymentsSmartyfunctions',
+                'getVoidUrl'
+            )
+        );
+
+        $module->getContext()->smarty->assign($tplVars);
+        return $module->display(dirname(dirname(__FILE__)), 'views/templates/admin/hook/admin_order_left.tpl');
     }
 
     /**
@@ -2044,7 +2126,11 @@ class TrustPaymentsBasemodule
             $templateVars['refundPending'] = true;
         }
         $module->getContext()->smarty->assign($templateVars);
-        return $module->display(dirname(dirname(__FILE__)), 'views/templates/admin/hook/admin_order.tpl');
+        if (version_compare(_PS_VERSION_, '1.7.7', '>=')) {
+            return $module->display(dirname(dirname(__FILE__)), 'views/templates/admin/hook/admin_order177.tpl');
+        } else {
+            return $module->display(dirname(dirname(__FILE__)), 'views/templates/admin/hook/admin_order.tpl');
+        }
     }
 
     public static function hookActionAdminOrdersControllerBefore(TrustPayments $module, $params)

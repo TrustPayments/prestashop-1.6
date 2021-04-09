@@ -15,7 +15,7 @@ This repository contains the PrestaShop Trust Payments payment module that enabl
 
 ## Documentation
 
-* [English](https://plugin-documentation.ep.trustpayments.com/TrustPayments/prestashop-1.6/1.2.4/docs/en/documentation.html)
+* [English](https://plugin-documentation.ep.trustpayments.com/TrustPayments/prestashop-1.6/1.2.5/docs/en/documentation.html)
 
 ## Support
 
@@ -23,7 +23,7 @@ Support queries can be issued on the [Trust Payments support site](https://www.t
 
 ## License
 
-Please see the [license file](https://github.com/TrustPayments/prestashop-1.6/blob/1.2.4/LICENSE) for more information.
+Please see the [license file](https://github.com/TrustPayments/prestashop-1.6/blob/1.2.5/LICENSE) for more information.
 
 ## Other PrestaShop Versions
 

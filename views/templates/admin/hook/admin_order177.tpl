@@ -7,21 +7,33 @@
  * @copyright 2017 - 2021 customweb GmbH
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
 *}
-{if (isset($showAuthorizedActions) && $showAuthorizedActions)}
+
 	<div style="display:none;" class="hidden-print">
-		<a class="btn btn-default trustpayments-management-btn"  id="trustpayments_void">
+		<a class="btn btn-action trustpayments-management-btn"  id="trustpayments_void">
 			<i class="icon-remove"></i>
 			{l s='Void' mod='trustpayments'}
 		</a>
-		<a class="btn btn-default trustpayments-management-btn"  id="trustpayments_completion">
+		<a class="btn btn-action trustpayments-management-btn"  id="trustpayments_completion">
 			<i class="icon-check"></i>
 			{l s='Completion' mod='trustpayments'}
 		</a>	
 	</div>
+
+	<script type="text/javascript">
+		var trustpayments_void_title = "{l s='Are you sure?' mod='trustpayments' js=1}";
+		var trustpayments_void_btn_confirm_txt = "{l s='Void Order' mod='trustpayments' js=1}";
+		var trustpayments_void_btn_deny_txt = "{l s='No' mod='trustpayments' js=1}";
+
+		var trustpayments_completion_title = "{l s='Are you sure?' mod='trustpayments' js=1}";
+		var trustpayments_completion_btn_confirm_txt = "{l s='Complete Order'  mod='trustpayments' js=1}";
+		var trustpayments_completion_btn_deny_txt = "{l s='No' mod='trustpayments' js=1}";
+
+		var trustpayments_msg_general_error = "{l s='The server experienced an unexpected error, please try again.'  mod='trustpayments' js=1}";
+		var trustpayments_msg_general_title_succes = "{l s='Success'  mod='trustpayments' js=1}";
+		var trustpayments_msg_general_title_error = "{l s='Error'  mod='trustpayments' js=1}";
+		var trustpayments_btn_info_confirm_txt = "{l s='OK'  mod='trustpayments' js=1}";
+	</script>
 	
-	{addJsDefL name=trustpayments_void_title}{l s='Are you sure?' mod='trustpayments' js=1}{/addJsDefL}
-	{addJsDefL name=trustpayments_void_btn_confirm_txt}{l s='Void Order'  mod='trustpayments' js=1}{/addJsDefL}
-	{addJsDefL name=trustpayments_void_btn_deny_txt}{l s='No' mod='trustpayments' js=1}{/addJsDefL}
 	<div id="trustpayments_void_msg" class="hidden-print" style="display:none">
 		{if !empty($affectedOrders)}
 			{l s='This will also void the following orders:' mod='trustpayments' js=1}
@@ -40,9 +52,6 @@
 		{/if}
 	</div>
 	
-	{addJsDefL name=trustpayments_completion_title}{l s='Are you sure?' mod='trustpayments' js=1}{/addJsDefL}
-	{addJsDefL name=trustpayments_completion_btn_confirm_txt}{l s='Complete Order'  mod='trustpayments' js=1}{/addJsDefL}
-	{addJsDefL name=trustpayments_completion_btn_deny_txt}{l s='No' mod='trustpayments' js=1}{/addJsDefL}
 	<div id="trustpayments_completion_msg" class="hidden-print" style="display:none">
 		{if !empty($affectedOrders)}
 			{l s='This will also complete the following orders:' mod='trustpayments'}
@@ -59,7 +68,7 @@
 			{l s='This finalizes the order, it no longer can be changed.' mod='trustpayments'}			
 		{/if}		
 	</div>
-{/if}
+
   
 {if (isset($showUpdateActions) && $showUpdateActions)}
 <div style="display:none;" class="hidden-print">
@@ -70,11 +79,6 @@
 </div>
 {/if}
 
-
-{addJsDefL name=trustpayments_msg_general_error}{l s='The server experienced an unexpected error, please try again.'  mod='trustpayments' js=1}{/addJsDefL}
-{addJsDefL name=trustpayments_msg_general_title_succes}{l s='Success'  mod='trustpayments' js=1}{/addJsDefL}
-{addJsDefL name=trustpayments_msg_general_title_error}{l s='Error'  mod='trustpayments' js=1}{/addJsDefL}
-{addJsDefL name=trustpayments_btn_info_confirm_txt}{l s='OK'  mod='trustpayments' js=1}{/addJsDefL}
 
 {if isset($isTrustPaymentsTransaction)}
 <div style="display:none;" class="hidden-print" id="trustpayments_is_transaction"></div>
@@ -142,7 +146,7 @@
 
 
 <script type="text/javascript">
-var isVersionGTE177 = false;
+	var isVersionGTE177 = true;
 {if isset($voidUrl)}
 	var trustPaymentsVoidUrl = "{$voidUrl|escape:'javascript':'UTF-8'}";
 {/if}
