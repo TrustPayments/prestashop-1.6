@@ -8,34 +8,52 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 jQuery(function ($) {
+
+    function isVersionGTE177(){
+        if(_PS_VERSION_ === undefined){
+            return false;
+        } else {
+           return _PS_VERSION_.startsWith('1.7.7');
+        }
+    }
     
     function moveTrustPaymentsDocuments()
     {
-        var parentElement = $("#trustpayments_documents_tab").parent();
-        $("#trustpayments_documents_tab").detach().appendTo(parentElement);
+        var documentsTab = $('#trustpayments_documents_tab');
+        if (isVersionGTE177()) {
+            documentsTab.children('a').addClass('nav-link');
+        } else {
+            var parentElement = documentsTab.parent();
+            documentsTab.detach().appendTo(parentElement);
+        }
     }
     
     function moveTrustPaymentsActionsAndInfo()
     {
-        $("a.trustpayments-management-btn").each(function (key, element) {
+        var managementBtn = $('a.trustpayments-management-btn');
+        var managementInfo = $('span.trustpayments-management-info');
+        var orderActions = $('div.order-actions');
+        var panel = $('div.panel');
+        
+        managementBtn.each(function (key, element) {
             $(element).detach();
-            if (isVersionGTE177 === true) {
-                $("div.order-actions").find(".order-navigation").before(element);
+            if (isVersionGTE177()) {
+                orderActions.find('.order-navigation').before(element);
             } else {
-                $("div.panel").find("div.well.hidden-print").find("i.icon-print").closest("div.well").append(element);
+                panel.find('div.well.hidden-print').find('i.icon-print').closest('div.well').append(element);
             }
         });
-        $("span.trustpayments-management-info").each(function (key, element) {
+        managementInfo.each(function (key, element) {
             $(element).detach();
-            if (isVersionGTE177 === true) {
-                $("div.order-actions").find(".order-navigation").before(element);
+            if (isVersionGTE177()) {
+                orderActions.find('.order-navigation').before(element);
             } else {
-                $("div.panel").find("div.well.hidden-print").find("i.icon-print").closest("div.well").append(element);
+                panel.find('div.well.hidden-print').find('i.icon-print').closest('div.well').append(element);
             }
         });
-    //to get the styling of prestashop we have to add this
-        $("a.trustpayments-management-btn").after("&nbsp;\n");
-        $("span.trustpayments-management-info").after("&nbsp;\n");
+        //to get the styling of prestashop we have to add this
+        managementBtn.after("&nbsp;\n");
+        managementInfo.after("&nbsp;\n");
     }
     
     function registerTrustPaymentsActions()
@@ -76,7 +94,6 @@ jQuery(function ($) {
             'type': 'modal',
             'title': title,
             'content': msg,
-            'closeBtn': false,
             'theme': theme,
             'replaceOtherAlerts': true,
             'closeOnClick': false,
@@ -101,10 +118,10 @@ jQuery(function ($) {
             dataType:   'json',
             url:    trustPaymentsUpdateUrl,
             success:    function (response, textStatus, jqXHR) {
-                if ( response.success == 'true' ) {
+                if ( response.success === 'true' ) {
                     location.reload();
                     return;
-                } else if ( response.success == 'false' ) {
+                } else if ( response.success === 'false' ) {
                     if (response.message) {
                         showTrustPaymentsInformation(response.message, msg_trustpayments_confirm_txt);
                     }
@@ -114,7 +131,7 @@ jQuery(function ($) {
             },
             error:  function (jqXHR, textStatus, errorThrown) {
                 showTrustPaymentsInformation(trustpayments_msg_general_error, msg_trustpayments_confirm_txt);
-            },
+            }
         });
     }
     
@@ -134,7 +151,7 @@ jQuery(function ($) {
             {
                 'text': trustpayments_void_btn_deny_txt,
                 'closeAlert': true,
-                'theme': 'black',
+                'theme': 'black'
             },
             {
                 'text': trustpayments_void_btn_confirm_txt,
@@ -144,7 +161,7 @@ jQuery(function ($) {
 
             }
             ],
-            'theme':'blue',
+            'theme':'blue'
         });
         return false;
     }
@@ -157,10 +174,10 @@ jQuery(function ($) {
             dataType:   'json',
             url:    trustPaymentsVoidUrl,
             success:    function (response, textStatus, jqXHR) {
-                if ( response.success == 'true' ) {
+                if ( response.success === 'true' ) {
                     showTrustPaymentsInformationSuccess(response.message);
                     return;
-                } else if ( response.success == 'false' ) {
+                } else if ( response.success === 'false' ) {
                     if (response.message) {
                         showTrustPaymentsInformationFailures(response.message);
                         return;
@@ -170,7 +187,7 @@ jQuery(function ($) {
             },
             error:  function (jqXHR, textStatus, errorThrown) {
                 showTrustPaymentsInformationFailures(trustpayments_msg_general_error);
-            },
+            }
         });
         return false;
     }
@@ -206,7 +223,7 @@ jQuery(function ($) {
             {
                 'text': trustpayments_completion_btn_deny_txt,
                 'closeAlert': true,
-                'theme': 'black',
+                'theme': 'black'
             },
             {
                 'text': trustpayments_completion_btn_confirm_txt,
@@ -215,7 +232,7 @@ jQuery(function ($) {
                 'onClick': executeTrustPaymentsCompletion
             }
             ],
-            'theme':'blue',
+            'theme':'blue'
         });
 
         return false;
@@ -230,10 +247,10 @@ jQuery(function ($) {
             dataType:   'json',
             url:    trustPaymentsCompletionUrl,
             success:    function (response, textStatus, jqXHR) {
-                if ( response.success == 'true' ) {
+                if ( response.success === 'true' ) {
                     showTrustPaymentsInformationSuccess(response.message);
                     return;
-                } else if ( response.success == 'false' ) {
+                } else if ( response.success === 'false' ) {
                     if (response.message) {
                         showTrustPaymentsInformationFailures(response.message);
                         return;
@@ -243,23 +260,23 @@ jQuery(function ($) {
             },
             error:  function (jqXHR, textStatus, errorThrown) {
                 showTrustPaymentsInformationFailures(trustpayments_msg_general_error);
-            },
+            }
         });
         return false;
     }
     
     function trustPaymentsTotalRefundChanges()
     {
-        var generateDiscount =  $('.standard_refund_fields').find('#generateDiscount').attr("checked") == 'checked';
-        var sendOffline = $('#trustpayments_refund_offline_cb_total').attr("checked") == 'checked';
+        var generateDiscount =  $('.standard_refund_fields').find('#generateDiscount').attr("checked") === 'checked';
+        var sendOffline = $('#trustpayments_refund_offline_cb_total').attr("checked") === 'checked';
         trustPaymentsRefundChanges('total', generateDiscount, sendOffline);
     }
     
     function trustPaymentsPartialRefundChanges()
     {
     
-        var generateDiscount = $('.partial_refund_fields').find('#generateDiscountRefund').attr("checked") == 'checked';
-        var sendOffline = $('#trustpayments_refund_offline_cb_partial').attr("checked")  == 'checked';
+        var generateDiscount = $('.partial_refund_fields').find('#generateDiscountRefund').attr("checked") === 'checked';
+        var sendOffline = $('#trustpayments_refund_offline_cb_partial').attr("checked")  === 'checked';
         trustPaymentsRefundChanges('partial', generateDiscount, sendOffline);
     }
     
@@ -286,52 +303,60 @@ jQuery(function ($) {
     
     function handleTrustPaymentsLayoutChanges()
     {
+        var addVoucher = $('#add_voucher');
+        var addProduct = $('#add_product');
+        var editProductChangeLink = $('.edit_product_change_link');
+        var descOrderStandardRefund = $('#desc-order-standard_refund');
+        var standardRefundFields = $('.standard_refund_fields');
+        var partialRefundFields = $('.partial_refund_fields');
+        var descOrderPartialRefund = $('#desc-order-partial_refund');
+
         if ($('#trustpayments_is_transaction').length > 0) {
-            $('#add_voucher').remove();
+            addVoucher.remove();
         }
         if ($('#trustpayments_remove_edit').length > 0) {
-            $('#add_product').remove();
-            $('#add_voucher').remove();
-            $('.edit_product_change_link').closest('div').remove();
+            addProduct.remove();
+            addVoucher.remove();
+            editProductChangeLink.closest('div').remove();
             $('.panel-vouchers').find('i.icon-minus-sign').closest('a').remove();
         }
         if ($('#trustpayments_remove_cancel').length > 0) {
-            $('#desc-order-standard_refund').remove();
+            descOrderStandardRefund.remove();
         }
         if ($('#trustpayments_changes_refund').length > 0) {
             $('#refund_total_3').closest('div').remove();
-            $('.standard_refund_fields').find('div.form-group').after($('#trustpayments_refund_online_text_total'));
-            $('.standard_refund_fields').find('div.form-group').after($('#trustpayments_refund_offline_text_total'));
-            $('.standard_refund_fields').find('div.form-group').after($('#trustpayments_refund_no_text_total'));
-            $('.standard_refund_fields').find('#spanShippingBack').after($('#trustpayments_refund_offline_span_total'));
-            $('.standard_refund_fields').find('#generateDiscount').off('click.trustpayments').on('click.trustpayments', trustPaymentsTotalRefundChanges);
+            standardRefundFields.find('div.form-group').after($('#trustpayments_refund_online_text_total'));
+            standardRefundFields.find('div.form-group').after($('#trustpayments_refund_offline_text_total'));
+            standardRefundFields.find('div.form-group').after($('#trustpayments_refund_no_text_total'));
+            standardRefundFields.find('#spanShippingBack').after($('#trustpayments_refund_offline_span_total'));
+            standardRefundFields.find('#generateDiscount').off('click.trustpayments').on('click.trustpayments', trustPaymentsTotalRefundChanges);
             $('#trustpayments_refund_offline_cb_total').on('click.trustpayments', trustPaymentsTotalRefundChanges);
         
             $('#refund_3').closest('div').remove();
-            $('.partial_refund_fields').find('button').before($('#trustpayments_refund_online_text_partial'));
-            $('.partial_refund_fields').find('button').before($('#trustpayments_refund_offline_text_partial'));
-            $('.partial_refund_fields').find('button').before($('#trustpayments_refund_no_text_partial'));
-            $('.partial_refund_fields').find('#generateDiscountRefund').closest('p').after($('#trustpayments_refund_offline_span_partial'));
-            $('.partial_refund_fields').find('#generateDiscountRefund').off('click.trustpayments').on('click.trustpayments', trustPaymentsPartialRefundChanges);
+            partialRefundFields.find('button').before($('#trustpayments_refund_online_text_partial'));
+            partialRefundFields.find('button').before($('#trustpayments_refund_offline_text_partial'));
+            partialRefundFields.find('button').before($('#trustpayments_refund_no_text_partial'));
+            partialRefundFields.find('#generateDiscountRefund').closest('p').after($('#trustpayments_refund_offline_span_partial'));
+            partialRefundFields.find('#generateDiscountRefund').off('click.trustpayments').on('click.trustpayments', trustPaymentsPartialRefundChanges);
             $('#trustpayments_refund_offline_cb_partial').on('click.trustpayments', trustPaymentsPartialRefundChanges);
         }
         if ($('#trustpayments_completion_pending').length > 0) {
-            $('#add_product').remove();
-            $('#add_voucher').remove();
-            $(".edit_product_change_link").closest('div').remove();
-            $('#desc-order-partial_refund').remove();
-            $('#desc-order-standard_refund').remove();
+            addProduct.remove();
+            addVoucher.remove();
+            editProductChangeLink.closest('div').remove();
+            descOrderPartialRefund.remove();
+            descOrderStandardRefund.remove();
         }
         if ($('#trustpayments_void_pending').length > 0) {
-            $('#add_product').remove();
-            $('#add_voucher').remove();
-            $(".edit_product_change_link").closest('div').remove();
-            $('#desc-order-partial_refund').remove();
-            $('#desc-order-standard_refund').remove();
+            addProduct.remove();
+            addVoucher.remove();
+            editProductChangeLink.closest('div').remove();
+            descOrderPartialRefund.remove();
+            descOrderStandardRefund.remove();
         }
         if ($('#trustpayments_refund_pending').length > 0) {
-            $('#desc-order-standard_refund').remove();
-            $('#desc-order-partial_refund').remove();
+            descOrderStandardRefund.remove();
+            descOrderPartialRefund.remove();
         }
         moveTrustPaymentsDocuments();
         moveTrustPaymentsActionsAndInfo();

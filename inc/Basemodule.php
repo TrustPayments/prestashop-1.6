@@ -128,6 +128,7 @@ class TrustPaymentsBasemodule
             $module->registerHook('actionOrderEdited') && $module->registerHook('displayAdminAfterHeader') &&
             $module->registerHook('displayAdminOrder') && $module->registerHook('displayAdminOrderContentOrder') &&
             $module->registerHook('displayAdminOrderLeft') && $module->registerHook('displayAdminOrderTabOrder') &&
+            $module->registerHook('displayAdminOrderTabContent') &&
             $module->registerHook('displayAdminOrderMain') && $module->registerHook('displayAdminOrderTabLink') &&
             $module->registerHook('displayBackOfficeHeader') && $module->registerHook('displayOrderDetail') &&
             $module->registerHook('actionProductCancel') && $module->registerHook('trustPaymentsSettingsChanged');
@@ -1974,7 +1975,7 @@ class TrustPaymentsBasemodule
      */
     public static function hookDisplayAdminOrderTabLink(TrustPayments $module, $params)
     {
-        self::hookDisplayAdminOrderTabOrder($module, $params);
+        return self::hookDisplayAdminOrderTabOrder($module, $params);
     }
 
     /**
@@ -1986,6 +1987,13 @@ class TrustPaymentsBasemodule
     public static function hookDisplayAdminOrderTabOrder(TrustPayments $module, $params)
     {
         $order = $params['order'];
+
+        // compatibility for versions >= 1.7.7
+        if (is_null($order)) {
+            $orderId = $params['id_order'];
+            $order = new Order($orderId);
+        }
+
         if ($order->module != $module->name) {
             return;
         }
@@ -2018,9 +2026,27 @@ class TrustPaymentsBasemodule
      * @param array $params
      * @return string
      */
+    public static function hookDisplayAdminOrderTabContent(TrustPayments $module, $params)
+    {
+        return self::hookDisplayAdminOrderContentOrder($module, $params);
+    }
+
+    /**
+     * Show Trust Payments documents table.
+     *
+     * @param array $params
+     * @return string
+     */
     public static function hookDisplayAdminOrderContentOrder(TrustPayments $module, $params)
     {
         $order = $params['order'];
+
+        // compatibility for versions >= 1.7.7
+        if (is_null($order)) {
+            $orderId = $params['id_order'];
+            $order = new Order($orderId);
+        }
+
         $transactionInfo = TrustPaymentsHelper::getTransactionInfoForOrder($order);
         if ($transactionInfo == null) {
             return '';
