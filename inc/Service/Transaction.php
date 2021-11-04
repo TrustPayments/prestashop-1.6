@@ -546,8 +546,8 @@ class TrustPaymentsServiceTransaction extends TrustPaymentsServiceAbstract
      *
      * @param Cart $cart
      * @return \TrustPayments\Sdk\Model\TransactionCreate
-	 * @throws \TrustPaymentsExceptionInvalidtransactionamount
-	 */
+     * @throws \TrustPaymentsExceptionInvalidtransactionamount
+     */
     protected function createTransactionFromCart(Cart $cart)
     {
         $spaceId = Configuration::get(TrustPaymentsBasemodule::CK_SPACE_ID, null, $cart->id_shop_group, $cart->id_shop);
@@ -608,12 +608,12 @@ class TrustPaymentsServiceTransaction extends TrustPaymentsServiceAbstract
     /**
      * Assemble the transaction data for the given quote.
      *
-	 * @param \Cart                                                       $cart
-	 * @param \TrustPayments\Sdk\Model\AbstractTransactionPending $transaction
-	 *
-	 * @return \TrustPayments\Sdk\Model\AbstractTransactionPending
-	 * @throws \TrustPaymentsExceptionInvalidtransactionamount
-	 */
+     * @param \Cart                                                       $cart
+     * @param \TrustPayments\Sdk\Model\AbstractTransactionPending $transaction
+     *
+     * @return \TrustPayments\Sdk\Model\AbstractTransactionPending
+     * @throws \TrustPaymentsExceptionInvalidtransactionamount
+     */
     protected function assembleCartTransactionData(
         Cart $cart,
         \TrustPayments\Sdk\Model\AbstractTransactionPending $transaction

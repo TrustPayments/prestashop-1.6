@@ -150,7 +150,7 @@
 {if isset($voidUrl)}
 	var trustPaymentsVoidUrl = "{$voidUrl|escape:'javascript':'UTF-8'}";
 {/if}
-{if isset($voidUrl)}
+{if isset($completionUrl)}
 	var trustPaymentsCompletionUrl = "{$completionUrl|escape:'javascript':'UTF-8'}";
 {/if}
 {if isset($updateUrl)}
