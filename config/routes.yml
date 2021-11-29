@@ -1,0 +1,14 @@
+download_packing_slip:
+  path: trustPayments/{orderId}/packingslip
+  methods: [GET]
+  defaults:
+    _controller: PrestaShop\Module\TrustPayments\Controller\Admin\processTrustPaymentsPackingSlip::processTrustPaymentsPackingSlip
+  requirements:
+      orderId: \d+
+download_invoice:
+  path: trustPayments/{orderId}/invoice
+  methods: [GET]
+  defaults:
+    _controller: PrestaShop\Module\TrustPayments\Controller\Admin\processTrustPaymentsInvoice::processTrustPaymentsInvoice
+  requirements:
+      orderId: \d+

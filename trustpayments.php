@@ -34,7 +34,7 @@ class TrustPayments extends PaymentModule
         $this->author = 'Customweb GmbH';
         $this->bootstrap = true;
         $this->need_instance = 0;
-        $this->version = '1.2.12';
+        $this->version = '1.2.13';
         $this->displayName = 'Trust Payments';
         $this->description = $this->l('This PrestaShop module enables to process payments with %s.');
         $this->description = sprintf($this->description, 'Trust Payments');
