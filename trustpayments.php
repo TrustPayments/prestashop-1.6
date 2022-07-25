@@ -34,7 +34,7 @@ class TrustPayments extends PaymentModule
         $this->author = 'Customweb GmbH';
         $this->bootstrap = true;
         $this->need_instance = 0;
-        $this->version = '1.2.27';
+        $this->version = '1.2.28';
         $this->displayName = 'Trust Payments';
         $this->description = $this->l('This PrestaShop module enables to process payments with %s.');
         $this->description = sprintf($this->description, 'Trust Payments');
@@ -161,6 +161,7 @@ class TrustPayments extends PaymentModule
         $output .= TrustPaymentsBasemodule::handleSaveDownload($this);
         $output .= TrustPaymentsBasemodule::handleSaveSpaceViewId($this);
         $output .= TrustPaymentsBasemodule::handleSaveOrderStatus($this);
+        $output .= TrustPaymentsBasemodule::handleSaveCronSettings($this);
         $output .= TrustPaymentsBasemodule::displayHelpButtons($this);
         return $output . TrustPaymentsBasemodule::displayForm($this);
     }
@@ -191,7 +192,8 @@ class TrustPayments extends PaymentModule
             TrustPaymentsBasemodule::getFeeForm($this),
             TrustPaymentsBasemodule::getDocumentForm($this),
             TrustPaymentsBasemodule::getSpaceViewIdForm($this),
-            TrustPaymentsBasemodule::getOrderStatusForm($this)
+            TrustPaymentsBasemodule::getOrderStatusForm($this),
+            TrustPaymentsBasemodule::getCronSettingsForm($this),
         );
     }
 
@@ -204,7 +206,8 @@ class TrustPayments extends PaymentModule
             TrustPaymentsBasemodule::getFeeItemConfigValues($this),
             TrustPaymentsBasemodule::getDownloadConfigValues($this),
             TrustPaymentsBasemodule::getSpaceViewIdConfigValues($this),
-            TrustPaymentsBasemodule::getOrderStatusConfigValues($this)
+            TrustPaymentsBasemodule::getOrderStatusConfigValues($this),
+            TrustPaymentsBasemodule::getCronSettingsConfigValues($this)
         );
     }
 
