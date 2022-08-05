@@ -141,7 +141,8 @@ class TrustPaymentsBasemodule
             $module->registerHook('displayAdminOrderTabContent') &&
             $module->registerHook('displayAdminOrderMain') && $module->registerHook('displayAdminOrderTabLink') &&
             $module->registerHook('displayBackOfficeHeader') && $module->registerHook('displayOrderDetail') &&
-            $module->registerHook('actionProductCancel') && $module->registerHook('trustPaymentsSettingsChanged');
+            $module->registerHook('actionProductCancel') && $module->registerHook('trustPaymentsSettingsChanged') &&
+            $module->registerHook('actionOrderSlipAdd');
     }
 
     public static function installConfigurationValues()
@@ -1834,10 +1835,9 @@ class TrustPaymentsBasemodule
         }
         self::handleVoucherAddRequest($module);
         self::handleVoucherDeleteRequest($module);
-        self::handleRefundRequest($module);
+        // self::handleRefundRequest($module);
         self::handleCancelProductRequest($module);
     }
-
 
     private static function handleVoucherAddRequest(TrustPayments $module)
     {
