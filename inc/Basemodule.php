@@ -117,6 +117,14 @@ class TrustPaymentsBasemodule
 
     public function checkRequirements(TrustPayments $module)
     {
+        if (!Module::isInstalled('mailhook')) {
+            $module->addError(
+                Tools::displayError(
+                    'The module mailhook is required.'
+                )
+            );
+            return false;
+        }
         try {
             \TrustPayments\Sdk\Http\HttpClientFactory::getClient();
         } catch (Exception $e) {
