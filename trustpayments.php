@@ -5,7 +5,7 @@
  * This Prestashop module enables to process payments with Trust Payments (https://www.trustpayments.com/).
  *
  * @author customweb GmbH (http://www.customweb.com/)
- * @copyright 2017 - 2022 customweb GmbH
+ * @copyright 2017 - 2023 customweb GmbH
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
@@ -34,7 +34,7 @@ class TrustPayments extends PaymentModule
         $this->author = 'Customweb GmbH';
         $this->bootstrap = true;
         $this->need_instance = 0;
-        $this->version = '1.2.33';
+        $this->version = '1.2.34';
         $this->displayName = 'Trust Payments';
         $this->description = $this->l('This PrestaShop module enables to process payments with %s.');
         $this->description = sprintf($this->description, 'Trust Payments');
