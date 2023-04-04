@@ -1019,7 +1019,10 @@ class TrustPaymentsBackendDefaultstrategy implements TrustPaymentsBackendIstrate
 
     public function isVoucherOnlyTrustPayments(Order $order, array $postData)
     {
-        return TrustPaymentsVersionadapter::isVoucherOnlyTrustPayments($postData);
+        if (method_exists('TrustPaymentsVersionadapter', 'isVoucherOnlyTrustPayments')) {
+            return TrustPaymentsVersionadapter::isVoucherOnlyTrustPayments($postData);
+        }
+        return FALSE;
     }
 
     public function isCancelRequest(Order $order, array $postData)
