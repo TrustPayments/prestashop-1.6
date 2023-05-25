@@ -29,4 +29,15 @@ class TrustPaymentsVersionadapter
     {
         return 'views/templates/admin/hook/admin_order.tpl';
     }
+
+    /**
+     * Returns true if the refund is only voucher, not required to be sent to TrustPayments.
+     *
+     * @param [] $postData
+     * @return boolean
+     */
+    public static function isVoucherOnlyTrustPayments($postData)
+    {
+        return isset($postData['generateDiscountRefund']) && ! isset($postData['trustpayments_offline']);
+    }
 }
